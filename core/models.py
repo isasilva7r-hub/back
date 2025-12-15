@@ -131,3 +131,32 @@ class Sale(ModelBase):
 
     class Meta:
         db_table = 'sale'
+
+
+class LogSimples(models.Model):
+    # Campo para a mensagem principal do log
+    mensagem = models.TextField(
+        verbose_name='Mensagem do Log'
+    )
+
+    # Campo para registrar o horário exato do evento
+    timestamp = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Data/Hora'
+    )
+
+    # Campo para categorizar o evento (ex: 'Alerta', 'Erro', 'Info')
+    categoria = models.CharField(
+        max_length=50,
+        default='INFO',
+        verbose_name='Categoria'
+    )
+
+    class Meta:
+        verbose_name = 'Log Simples'
+        verbose_name_plural = 'Logs Simples'
+        # Garante que os logs mais recentes apareçam primeiro
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return f"[{self.categoria}] {self.timestamp.strftime('%Y-%m-%d %H:%M')} - {self.mensagem[:50]}...
